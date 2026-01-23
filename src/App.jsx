@@ -748,7 +748,7 @@ export default function SpotifyNotetakerDemo() {
   // Share demo on X
   const shareOnX = () => {
     const text = encodeURIComponent(`🎧 Check out this cool interactive demo for podcast note-taking in Spotify!\n\nBookmarks, notes, knowledge trees & export — all in one place.\n\nTry it out 👇`);
-    const url = encodeURIComponent('https://spotify-notetaker.vercel.app');
+    const url = encodeURIComponent('https://spotify-notetaker-git-master-sergiopeschs-projects.vercel.app');
     window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}&via=sergiopesch`, '_blank', 'width=550,height=450');
   };
   
