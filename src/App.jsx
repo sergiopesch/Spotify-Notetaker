@@ -339,7 +339,7 @@ function IntroScreen({ onStart }) {
 }
 
 // ============ KNOWLEDGE TREE MODAL ============
-function KnowledgeTreeModal({ note, onClose }) {
+function KnowledgeTreeModal({ note, onClose, onShare }) {
   const [visible, setVisible] = useState(false);
   const [activeNodes, setActiveNodes] = useState([]);
   const tree = getKnowledgeTree(note.text);
@@ -500,13 +500,23 @@ function KnowledgeTreeModal({ note, onClose }) {
             </div>
           </div>
           
-          <div className="flex gap-2 sm:gap-3 pb-6 sm:pb-8">
+          <div className="flex gap-2 sm:gap-3">
             <button className="flex-1 py-3 sm:py-4 rounded-xl sm:rounded-2xl bg-[#1DB954] hover:bg-[#1ed760] font-bold text-sm sm:text-base text-white transition-all active:scale-[0.98]">
               Find More Episodes
             </button>
             <button onClick={handleClose} className="py-3 sm:py-4 px-4 sm:px-6 rounded-xl sm:rounded-2xl bg-zinc-800 hover:bg-zinc-700 font-medium text-sm sm:text-base transition-all border border-zinc-700">
               Done
             </button>
+          </div>
+
+          {/* Share Demo CTA */}
+          <ShareDemoCTA onShare={onShare} />
+
+          {/* Creator credit */}
+          <div className="mt-4 mb-8 text-center">
+            <p className="text-xs text-zinc-600">
+              Made with 💚 by <a href="https://twitter.com/sergiopesch" target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-[#1DB954] transition-colors">@sergiopesch</a>
+            </p>
           </div>
         </div>
       </div>
@@ -515,7 +525,7 @@ function KnowledgeTreeModal({ note, onClose }) {
 }
 
 // ============ EXPORT MODAL ============
-function ExportModal({ notes, onClose }) {
+function ExportModal({ notes, onClose, onShare }) {
   const [copied, setCopied] = useState(false);
   const [activeFormat, setActiveFormat] = useState('card');
   const [visible, setVisible] = useState(false);
@@ -644,6 +654,16 @@ function ExportModal({ notes, onClose }) {
         <div className="overflow-y-auto p-3 sm:p-4" style={{ maxHeight: 'calc(100dvh - 20rem)', minHeight: '120px' }}>
           <div className="bg-zinc-800/50 rounded-xl sm:rounded-2xl p-3 sm:p-4 border border-zinc-700">
             <pre className="text-xs sm:text-sm text-zinc-300 whitespace-pre-wrap font-mono leading-relaxed">{generateExport()}</pre>
+          </div>
+
+          {/* Share Demo CTA */}
+          <ShareDemoCTA onShare={onShare} />
+
+          {/* Creator credit */}
+          <div className="mt-4 text-center">
+            <p className="text-xs text-zinc-600">
+              Made with 💚 by <a href="https://twitter.com/sergiopesch" target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-[#1DB954] transition-colors">@sergiopesch</a>
+            </p>
           </div>
         </div>
         
@@ -868,15 +888,6 @@ export default function SpotifyNotetakerDemo() {
             </div>
           </div>
           
-          {/* Share CTA */}
-          <ShareDemoCTA onShare={shareOnX} />
-          
-          {/* Creator credit */}
-          <div className="mt-6 text-center">
-            <p className="text-xs text-zinc-600">
-              Made with 💚 by <a href="https://twitter.com/sergiopesch" target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-[#1DB954] transition-colors">@sergiopesch</a>
-            </p>
-          </div>
         </div>
       )}
       
@@ -1015,21 +1026,11 @@ export default function SpotifyNotetakerDemo() {
                   )}
                 </div>
               </div>
-              
-              {/* Share CTA in player */}
-              <ShareDemoCTA onShare={shareOnX} />
-              
-              {/* Creator credit */}
-              <div className="mt-6 mb-8 text-center">
-                <p className="text-xs text-zinc-600">
-                  Made with 💚 by <a href="https://twitter.com/sergiopesch" target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-[#1DB954] transition-colors">@sergiopesch</a>
-                </p>
-              </div>
             </div>
           </div>
         </div>
       )}
-      
+
       {/* Bottom Nav */}
       {!showIntro && currentScreen === 'home' && (
         <div className="fixed bottom-0 left-0 right-0 bg-zinc-900/95 backdrop-blur-lg border-t border-zinc-800 px-4 sm:px-6 py-3 sm:py-4" style={{ paddingBottom: 'max(0.75rem, env(safe-area-inset-bottom))' }}>
@@ -1061,8 +1062,8 @@ export default function SpotifyNotetakerDemo() {
       )}
       
       {showNoteInput && <NoteInputModal timestamp={currentTime} onSave={handleSaveNote} onClose={() => setShowNoteInput(false)} />}
-      {showExport && <ExportModal notes={notes} onClose={() => setShowExport(false)} />}
-      {showKnowledgeTree && <KnowledgeTreeModal note={showKnowledgeTree} onClose={() => setShowKnowledgeTree(null)} />}
+      {showExport && <ExportModal notes={notes} onClose={() => setShowExport(false)} onShare={shareOnX} />}
+      {showKnowledgeTree && <KnowledgeTreeModal note={showKnowledgeTree} onClose={() => setShowKnowledgeTree(null)} onShare={shareOnX} />}
       
       <style>{`
         .glass-card {
